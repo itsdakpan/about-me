@@ -37,11 +37,29 @@ const state = (page) =>
     return {
       pressed,
       view: document.querySelector("[data-view]")?.getAttribute("data-view"),
-      mountedSection: document.querySelector("[data-view] section")?.id,
+      mountedSection: document.querySelector("[data-view] > [id]")?.id,
       menuVisible: !!menu && getComputedStyle(menu).display !== "none",
       burgerExpanded: document
         .querySelector('button[aria-label="Menu"]')
         ?.getAttribute("aria-expanded"),
+      scrollWidth: document.documentElement.scrollWidth,
+    };
+  });
+
+// Play view: blocks present, column counts, and where the Back Story heading sits.
+const playState = (page) =>
+  page.evaluate(() => {
+    const story = document.querySelector("#story h2");
+    const cols = (el) =>
+      el ? getComputedStyle(el).gridTemplateColumns.split(" ").length : 0;
+    const top = story?.getBoundingClientRect().top ?? -1;
+    return {
+      storyHeading: story?.textContent,
+      storyInViewport: top >= 0 && top < window.innerHeight,
+      storyColumns: cols(document.querySelector("#story > div")),
+      facts: document.querySelectorAll("#play .grid > div:has(> span[aria-hidden])").length,
+      factColumns: cols(document.querySelector("#play section:last-child .grid")),
+      pullQuote: document.querySelector("#play em")?.closest("div")?.textContent,
       scrollWidth: document.documentElement.scrollWidth,
     };
   });
@@ -65,6 +83,23 @@ for (const [width, height] of [
     naturalHeight: img.naturalHeight,
   }));
   expect(`face photo upright at ${width}px`, photo.naturalHeight > photo.naturalWidth, photo);
+
+  await page.getByRole("button", { name: "play", exact: true }).click();
+  await page.waitForSelector("#story");
+  const p = await playState(page);
+  const columns = width > 700 ? 2 : 1;
+  expect(
+    `Play view blocks at ${width}px`,
+    p.storyHeading === "Back Story." &&
+      p.facts === 6 &&
+      p.storyColumns === columns &&
+      p.factColumns === columns &&
+      p.scrollWidth <= width,
+    p,
+  );
+  const playFile = `${outDir}/play-${width}.png`;
+  await page.screenshot({ path: playFile, fullPage: true });
+  evidence.screenshots.push(playFile);
   await page.close();
 }
 
@@ -88,6 +123,9 @@ evidence.screenshots.push(`${outDir}/menu-open-1440.png`);
 await page.getByRole("link", { name: "Back Story" }).click();
 s = await state(page);
 expect("menu link closes menu and switches view", !s.menuVisible && s.view === "play", s);
+await page.waitForTimeout(500);
+const fromMenu = await playState(page);
+expect("Back Story link scrolls to the story", fromMenu.storyInViewport, fromMenu);
 
 await page.click('button[aria-label="Menu"]');
 await page.keyboard.press("Escape");
@@ -108,6 +146,13 @@ for (const hash of ["#play", "#story"]) {
     .catch(() => {});
   s = await state(playPage);
   expect(`/${hash} opens on Play`, s.view === "play" && s.pressed[0] === "play", s);
+  if (hash === "#story") {
+    await playPage.waitForTimeout(500);
+    const p = await playState(playPage);
+    expect("/#story shows the Back Story heading", p.storyInViewport, p);
+    await playPage.screenshot({ path: `${outDir}/story-1440.png` });
+    evidence.screenshots.push(`${outDir}/story-1440.png`);
+  }
   await playPage.close();
 }
 
