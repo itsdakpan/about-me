@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dylan Akpan</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f4f2ee; --ink:#2b2a28; --soft:#6f6b65; --line:#e3dfd8; --card:#fff; --accent:#f0d6c8; --warm:#b5603f; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--ink); font-family:Fraunces,serif; line-height:1.6; overflow-x:hidden; }
+  a { color:inherit; }
+  .fill { background:#fff3b0; padding:0 4px; border-radius:3px; font-style:italic; }
+
+  header { position:fixed; top:0; left:0; right:0; display:flex; justify-content:space-between; align-items:center; padding:20px 28px; z-index:10; }
+  .bubble { width:48px; height:48px; border-radius:50%; background:var(--card); box-shadow:0 6px 18px #0000001a; display:flex; align-items:center; justify-content:center; font-size:24px; border:none; cursor:pointer; }
+  .toggle { background:#e8e4dd; border-radius:30px; padding:5px; display:flex; box-shadow:0 6px 18px #0000000f; }
+  .toggle button { border:none; background:none; font:inherit; font-size:15px; padding:8px 22px; border-radius:24px; cursor:pointer; color:#888; transition:.25s; }
+  .toggle button.on { background:#fff; color:var(--ink); font-weight:700; box-shadow:0 2px 6px #0000001a; }
+
+  .menu { position:fixed; top:80px; right:28px; background:#fff; border-radius:16px; box-shadow:0 10px 30px #00000022; padding:14px 0; display:none; z-index:11; min-width:180px; }
+  .menu.open { display:block; }
+  .menu a { display:block; padding:8px 22px; text-decoration:none; }
+  .menu a:hover { background:var(--bg); }
+
+  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 16px; position:relative; }
+  .sq { position:absolute; background:#d6d0c5; border-radius:22%; animation:float 9s ease-in-out infinite; }
+  .hero > :not(.sq) { position:relative; z-index:1; }
+  @media (max-width:700px) { .sq { opacity:.5; } }
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-22px) rotate(25deg)} }
+  h1 { font-size:clamp(40px,8vw,84px); font-weight:800; letter-spacing:-2px; background:linear-gradient(90deg,#9a9a98,#2b2b2b 60%); -webkit-background-clip:text; background-clip:text; color:transparent; display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center; }
+  .face { width:clamp(56px,9vw,86px); height:clamp(56px,9vw,86px); border-radius:50%; position:relative; display:inline-block; }
+  .face::before { content:""; position:absolute; inset:-10px; background:var(--accent); border-radius:46% 54% 40% 60%; transform:rotate(-12deg); }
+  .face span { position:absolute; inset:0; border-radius:50%; background:#8a6a55; color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; -webkit-text-fill-color:#fff; letter-spacing:0; font-weight:500; }
+  .pin { color:var(--soft); margin-top:22px; font-size:15px; background:#fff; border-radius:30px; padding:7px 18px; box-shadow:0 4px 14px #0000000d; display:inline-flex; align-items:center; gap:8px; }
+  .pin i { width:8px; height:8px; border-radius:50%; background:#3cb371; animation:pulse 1.8s ease-out infinite; }
+  @keyframes pulse { 0%{box-shadow:0 0 0 0 #3cb37199} 70%{box-shadow:0 0 0 8px #3cb37100} 100%{box-shadow:0 0 0 0 #3cb37100} }
+  .lede { color:var(--soft); margin-top:14px; font-size:18px; max-width:560px; }
+
+  section { max-width:900px; margin:0 auto; padding:70px 24px; }
+  .label { font-size:12px; letter-spacing:3px; color:var(--warm); font-weight:600; text-transform:uppercase; }
+  .big { font-family:Fraunces,serif; font-weight:400; font-size:clamp(28px,4.2vw,42px); line-height:1.2; letter-spacing:-.5px; margin-top:10px; }
+  .big em { color:var(--warm); }
+  .intro { font-size:18px; color:#555; max-width:680px; margin-top:20px; line-height:1.7; }
+  .job b { font-family:Fraunces,serif; font-weight:600; font-size:20px; }
+  .story { display:grid; grid-template-columns:220px 1fr; gap:40px; }
+  .story h2 { font-family:Fraunces,serif; font-weight:400; font-size:42px; line-height:1; }
+  .story p { color:#444; margin-bottom:18px; font-size:16.5px; }
+  .story p a { color:var(--warm); }
+
+  .facts { display:grid; grid-template-columns:1fr 1fr; gap:18px 40px; margin-top:24px; }
+  .facts div { display:flex; gap:12px; }
+  .facts div::before { content:"✓"; flex:none; width:22px; height:22px; border-radius:50%; background:var(--ink); color:#fff; font-size:12px; display:flex; align-items:center; justify-content:center; margin-top:3px; }
+
+  .press { text-align:center; padding:80px 16px; }
+  .press { border-top:1px solid var(--line); border-bottom:1px solid var(--line); max-width:900px; margin:0 auto; }
+  .pull { font-family:Fraunces,serif; font-style:italic; font-size:clamp(34px,6vw,64px); line-height:1.1; letter-spacing:-1px; }
+  .pull em { color:var(--warm); }
+
+  .jobs { margin-top:26px; border-top:1px solid var(--line); }
+  .job { display:grid; grid-template-columns:1fr auto; padding:22px 0; border-bottom:1px solid var(--line); gap:6px 20px; }
+  .job b { font-size:18px; } .job small { color:var(--soft); }
+  .job p { grid-column:1/-1; color:#444; }
+  .projects { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:26px; }
+  .proj { background:#fff; border-radius:18px; padding:22px; box-shadow:0 4px 14px #0000000a; text-decoration:none; transition:.2s; }
+  .proj:hover { transform:translateY(-3px); }
+  .proj b { font-family:Fraunces,serif; font-weight:600; font-size:21px; } .proj p { color:var(--soft); font-size:15px; margin-top:6px; }
+  .stack { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+  .stack span { background:#fff; border:1px solid var(--line); border-radius:20px; padding:6px 14px; font-size:14px; }
+
+  .view { display:none; } .view.on { display:block; animation:fade .4s; }
+  @keyframes fade { from{opacity:0;transform:translateY(10px)} to{opacity:1} }
+
+  footer { background:#ebe7e0; text-align:center; padding:50px 16px; margin-top:40px; }
+  footer .icons { display:flex; gap:24px; justify-content:center; font-size:15px; font-weight:600; }
+  footer .icons a { width:44px; height:44px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 10px #0000000d; transition:.2s; }
+  footer .icons a:hover { transform:translateY(-2px); }
+  footer .icons svg { width:20px; height:20px; fill:#5f5a53; }
+  footer .icons a[aria-label="Email"] svg { fill:none; stroke:#5f5a53; }
+  footer small { display:block; margin-top:16px; color:#888; }
+
+  @media (max-width:700px) {
+    header { padding:14px 16px; } .toggle button { padding:7px 16px; }
+    .story { grid-template-columns:1fr; gap:10px; } .facts, .projects { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bubble" style="width:54px;height:54px;padding:0;background:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #2b2b2b22,0 6px 18px #0000001a;overflow:hidden"><img src="../public/memoji.jpg" alt="Dylan" style="width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scale(1.15)"></div>
+  <div class="toggle">
+    <button id="tw" class="on" onclick="show('work')">work</button>
+    <button id="tp" onclick="show('play')">play</button>
+  </div>
+  <button class="bubble" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+</header>
+<nav class="menu" id="menu">
+  <a href="#top" onclick="show('work')">Experience</a>
+  <a href="#projects" onclick="show('work')">Projects</a>
+  <a href="#story" onclick="show('play')">Back Story</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<div class="hero" id="top">
+  <div class="sq" style="width:22px;height:22px;top:22%;left:14%"></div>
+  <div class="sq" style="width:34px;height:34px;top:30%;right:18%;animation-delay:-3s"></div>
+  <div class="sq" style="width:14px;height:14px;top:62%;left:22%;animation-delay:-5s"></div>
+  <div class="sq" style="width:26px;height:26px;top:70%;right:12%;animation-delay:-2s"></div>
+  <div class="sq" style="width:12px;height:12px;top:18%;left:58%;animation-delay:-7s"></div>
+  <div class="sq" style="width:40px;height:40px;top:52%;left:7%;animation-delay:-4s;opacity:.6"></div>
+  <h1>Hi, I'm Dylan <span class="face"><span style="overflow:hidden;font-size:0"><img src="../public/img9105.jpg" alt="Dylan" style="position:absolute;width:300%;max-width:none;left:-101%;top:-176%"></span></span></h1>
+  <div class="pin"><i></i>working remotely, open to anywhere</div>
+  <p class="lede">Ex mechanical engineer, now a developer. I build web apps and AI automations.</p>
+</div>
+
+<!-- WORK -->
+<div class="view on" id="work">
+  <section>
+    <div class="label">What I've been doing</div>
+    <div class="big">I've always loved building things. These days I just do it <em>from a laptop</em>.</div>
+    <p class="intro">Before code, I worked on lab automation equipment and factory machines. Then, almost by chance, I got into coding, and I loved it straight away. It felt like engineering: you're still building things. But doing it from a laptop was easier, more fun, and it brought out a creative side I didn't always get to use in a factory or a lab.</p>
+    <div class="jobs">
+      <div class="job"><b>Software Developer, freelance</b><small>2025 to 2026</small><p>Web apps and workflow automations for small businesses.</p></div>
+      <div class="job"><b>Electrical Engineer, Proseal</b><small>2024 to 2025</small><p>Worked on 15+ automated packaging machines and cut 12+ hours of downtime a week.</p></div>
+      <div class="job"><b>Deployment Engineer, Automata</b><small>2023 to 2024</small><p>Took 5 lab automation systems from build to deployment.</p></div>
+    </div>
+  </section>
+  <section id="projects">
+    <div class="label">Things I've built</div>
+    <div class="projects">
+      <a class="proj" href="https://itsdakpan.github.io/cursor-hackathon-salaya"><b>Care Companion</b><p>AI check-ins and medication reminders for an older relative. Built in 2.5 hours, 1st of 22 teams at the Cursor Hackathon Bangkok.</p></a>
+      <a class="proj" href="https://pacelog-pai11.vercel.app"><b>PaceLog</b><p>Running diary with streaks and race predictions. Rails API, React.</p></a>
+      <a class="proj" href="https://two1-days-later.onrender.com"><b>21 Days Later</b><p>Group habit tracker on a shared board. Rails, Hotwire, Postgres.</p></a>
+      <a class="proj" href="https://power-share-sgq3.onrender.com"><b>Power-Share</b><p>Booking marketplace with dates, reviews and listings. Rails 8.</p></a>
+    </div>
+    <div class="stack"><span>TypeScript</span><span>JavaScript</span><span>React</span><span>Next.js</span><span>Ruby on Rails</span><span>PostgreSQL</span><span>Tailwind</span><span>n8n</span><span>Claude Code</span><span>Cursor</span><span>Git</span></div>
+  </section>
+</div>
+
+<!-- PLAY -->
+<div class="view" id="play">
+  <section>
+    <div class="label">Me in a nutshell</div>
+    <div class="big">I'm a son, a brother, a friend, an anime lover, a gamer, a coffee enthusiast, and an engineer who became a software developer.</div>
+  </section>
+  <section id="story">
+    <div class="story">
+      <h2>Back Story.</h2>
+      <div>
+        <p>Since I was a kid, I knew what I wanted to be: an engineer. Building things just felt natural to me, so I spent years in school becoming one.</p>
+        <p>Then I got there, and slowly realised it wasn't quite my calling. Engineering is slow. There are a lot of processes to follow, and not much room to be creative.</p>
+        <p>Then I found code, and it unlocked a kind of creativity and flow I'd never had before. You can make something real in a short time, especially now with AI, and once it's live, loads of people can use what you built. My team once built an app in two and a half hours and <a href="https://itsdakpan.github.io/cursor-hackathon-salaya">won a hackathon with it</a>.</p>
+        <p>That's what I love about it. It's fulfilling, it's exciting, and I'm still the kid who just wants to build things. The rest of the story's better over a coffee, so <a href="mailto:dakpan0593@gmail.com">come and say hi</a>.</p>
+      </div>
+    </div>
+  </section>
+  <div class="press">
+    <div class="pull">Still the kid who just wants to <em>build things</em>.</div>
+  </div>
+  <section>
+    <div class="label">On the other side</div>
+    <div class="big">Outside of code, I'm a man of many interests. I run, I train <em>BJJ</em> and <em>Muay Thai</em>, and I love, love, love to <em>travel</em>.</div>
+    <p class="intro">I'm big on self-development and I'm always learning something new. And when I finally switch off, you'll find me deep in an anime, losing hours to a game, or hunting down a good cup of coffee.</p>
+  </section>
+  <section>
+    <div class="label">Random facts</div>
+    <div class="facts">
+      <div>My go-to coffee is a coconut Americano with caramel. Simple, really.</div>
+      <div>I've been to 15 countries so far, and I'm nowhere near done.</div>
+      <div>My favourite food is broccoli. Yes, really.</div>
+      <div>My lucky number is 5.</div>
+      <div>I'm fluent in Italian.</div>
+      <div>I train BJJ and Muay Thai, so I'm happy standing up or on the ground.</div>
+    </div>
+  </section>
+</div>
+
+<footer id="contact">
+  <div class="icons">
+    <a href="https://linkedin.com/in/dylan-a-5683091a8" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a>
+    <a href="https://github.com/itsdakpan" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg></a>
+    <a href="mailto:dakpan0593@gmail.com" aria-label="Email" title="Email"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 6 9 7 9-7"/></svg></a>
+  </div>
+  <small>© 2026 Dylan Akpan. Built with Fredrin: each section was its own ticket, branch and agent.</small>
+</footer>
+
+<script>
+function show(v){
+  document.getElementById('work').classList.toggle('on', v==='work');
+  document.getElementById('play').classList.toggle('on', v==='play');
+  document.getElementById('tw').classList.toggle('on', v==='work');
+  document.getElementById('tp').classList.toggle('on', v==='play');
+  document.getElementById('menu').classList.remove('open');
+}
+if (location.hash === '#play' || location.hash === '#story') show('play');
+</script>
+</body>
+</html>
