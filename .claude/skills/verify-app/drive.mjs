@@ -17,7 +17,13 @@ const browser = await chromium.launch();
 
 async function openPage(width, height, path = "/") {
   const page = await browser.newPage({ viewport: { width, height } });
-  await page.goto(baseUrl + path, { waitUntil: "networkidle" });
+  await page.goto(baseUrl + path, { waitUntil: "load", timeout: 180_000 });
+  await page.waitForSelector("h1");
+  // Wait for React to hydrate the header, so clicks and hash state are live.
+  await page.waitForFunction(() => {
+    const burger = document.querySelector('button[aria-label="Menu"]');
+    return !!burger && Object.keys(burger).some((k) => k.startsWith("__react"));
+  });
   await page.evaluate(() => document.fonts.ready);
   return page;
 }
@@ -95,6 +101,10 @@ for (const label of ["LinkedIn", "GitHub", "Email"]) {
 await page.close();
 
 const playPage = await openPage(1440, 900, "/#play");
+// The hash view is applied in the render pass right after hydration.
+await playPage
+  .waitForSelector('[data-view="play"]', { timeout: 5000 })
+  .catch(() => {});
 s = await state(playPage);
 expect("/#play opens on Play", s.view === "play" && s.pressed[0] === "play", s);
 await playPage.close();
