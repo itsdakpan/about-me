@@ -83,6 +83,26 @@ for (const [width, height] of [
     naturalHeight: img.naturalHeight,
   }));
   expect(`face photo upright at ${width}px`, photo.naturalHeight > photo.naturalWidth, photo);
+  const work = await page.evaluate(() => {
+    const cards = [...document.querySelectorAll("#projects a.proj")];
+    return {
+      jobs: document.querySelectorAll("#work .job").length,
+      projects: cards.length,
+      chips: document.querySelectorAll("#projects .stack span").length,
+      projectColumns: new Set(cards.map((a) => Math.round(a.getBoundingClientRect().left))).size,
+      hrefs: cards.map((a) => a.getAttribute("href")),
+    };
+  });
+  expect(
+    `Work view has 3 jobs, 4 projects, 11 chips at ${width}px`,
+    work.jobs === 3 && work.projects === 4 && work.chips === 11,
+    work,
+  );
+  expect(
+    `project grid has ${width > 700 ? 2 : 1} column(s) at ${width}px`,
+    work.projectColumns === (width > 700 ? 2 : 1),
+    work,
+  );
 
   await page.getByRole("button", { name: "play", exact: true }).click();
   await page.waitForSelector("#story");
@@ -126,6 +146,26 @@ expect("menu link closes menu and switches view", !s.menuVisible && s.view === "
 await page.waitForTimeout(500);
 const fromMenu = await playState(page);
 expect("Back Story link scrolls to the story", fromMenu.storyInViewport, fromMenu);
+
+await page.click('button[aria-label="Menu"]');
+await page.getByRole("link", { name: "Projects" }).click();
+await page.waitForTimeout(500);
+s = await state(page);
+// #projects sits near the bottom, so the jump can stop at max scroll (as in the reference).
+const jump = await page.evaluate(() => ({
+  projectsTop: document.getElementById("projects")?.getBoundingClientRect().top,
+  scrollY: window.scrollY,
+  maxScroll: document.documentElement.scrollHeight - window.innerHeight,
+}));
+expect(
+  "Projects link switches to Work and scrolls #projects into view",
+  s.view === "work" && s.pressed[0] === "work" && jump.projectsTop !== undefined &&
+    jump.projectsTop >= -5 && jump.projectsTop < 900 &&
+    (Math.abs(jump.projectsTop) < 5 || Math.abs(jump.scrollY - jump.maxScroll) < 2),
+  { ...s, ...jump },
+);
+await page.screenshot({ path: `${outDir}/projects-link-1440.png` });
+evidence.screenshots.push(`${outDir}/projects-link-1440.png`);
 
 await page.click('button[aria-label="Menu"]');
 await page.keyboard.press("Escape");

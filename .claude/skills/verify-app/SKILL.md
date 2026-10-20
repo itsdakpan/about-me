@@ -65,6 +65,7 @@ It exits non-zero if any step fails. Extend it when a feature below changes.
 
 - `.fredrin/tmp/verify/home-1440.png`, `home-390.png`: full page
 - `.fredrin/tmp/verify/menu-open-1440.png`: menu open
+- `.fredrin/tmp/verify/projects-link-1440.png`: after the menu's Projects link
 - `.fredrin/tmp/verify/play-1440.png`, `play-390.png`: Play view, full page
 - `.fredrin/tmp/verify/story-1440.png`: `/#story` on load
 
@@ -88,5 +89,5 @@ One file per feature under `features/`: what it does, how to drive it, what prov
 - [burger-menu.md](features/burger-menu.md): burger and dropdown menu
 - [hero.md](features/hero.md): headline, face photo, pill, lede, floating squares
 - [footer.md](features/footer.md): social icons and copyright
-- [views.md](features/views.md): Work and Play views (Work is a placeholder until its ticket lands)
+- [views.md](features/views.md): Work view (jobs, projects, stack) and Play view
 - [play-view.md](features/play-view.md): Play view blocks, `/#story` and the Back Story link
