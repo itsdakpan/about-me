@@ -92,7 +92,7 @@ export default function WorkView() {
 
       <Section id="projects">
         <Label>Things I&apos;ve built</Label>
-        <div className="mt-[26px] grid grid-cols-2 gap-[18px] max-[700px]:grid-cols-1">
+        <div className="mt-[26px] grid grid-cols-2 gap-[18px] [@media(max-width:700px)]:grid-cols-1">
           {projects.map((project) => (
             <a
               key={project.name}
