@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer
       id="contact"
-      className="mt-10 bg-footer px-4 py-[50px] text-center"
+      className="mt-10 scroll-mt-[96px] bg-footer px-4 py-[50px] text-center max-[700px]:scroll-mt-[84px]"
     >
       <div className="flex justify-center gap-6 text-[15px] font-semibold">
         <a

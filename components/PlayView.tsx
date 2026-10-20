@@ -28,7 +28,7 @@ export default function PlayView() {
   }, []);
 
   return (
-    <div id="play">
+    <div id="play" className="scroll-mt-[96px] max-[700px]:scroll-mt-[84px]">
       <Section>
         <Label>Me in a nutshell</Label>
         <Big>
