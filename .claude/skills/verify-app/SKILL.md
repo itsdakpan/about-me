@@ -51,7 +51,7 @@ node .claude/skills/verify-app/drive.mjs http://localhost:3100 .fredrin/tmp/veri
 - burger: `button[aria-label="Menu"]` (state in `aria-expanded`); the menu is `nav#menu`
 - menu links by text: Experience, Projects, Back Story, Contact
 - footer links: `footer a[aria-label="LinkedIn|GitHub|Email"]`
-- the mounted view: `[data-view]` wrapper, holding `section#work` or `section#play`
+- the mounted view: `[data-view]` wrapper, holding `section#work` or `div#play`
 - routes: `/`, `/#play` and `/#story`
 - viewports: 1440×900 and 390×844, full-page screenshots
 
@@ -66,6 +66,8 @@ It exits non-zero if any step fails. Extend it when a feature below changes.
 - `.fredrin/tmp/verify/home-1440.png`, `home-390.png`: full page
 - `.fredrin/tmp/verify/menu-open-1440.png`: menu open
 - `.fredrin/tmp/verify/projects-link-1440.png`: after the menu's Projects link
+- `.fredrin/tmp/verify/play-1440.png`, `play-390.png`: Play view, full page
+- `.fredrin/tmp/verify/story-1440.png`: `/#story` on load
 
 Compare the screenshots by eye against the approved mockups (`desktop.png`,
 `mobile.png`, `footer.png` on ticket ABOU-C5G7C5). On a Fredrin ticket, upload them
@@ -88,3 +90,4 @@ One file per feature under `features/`: what it does, how to drive it, what prov
 - [hero.md](features/hero.md): headline, face photo, pill, lede, floating squares
 - [footer.md](features/footer.md): social icons and copyright
 - [views.md](features/views.md): Work view (jobs, projects, stack) and Play view
+- [play-view.md](features/play-view.md): Play view blocks, `/#story` and the Back Story link
