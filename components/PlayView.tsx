@@ -15,10 +15,14 @@ const facts = [
 
 const storyLink = "text-warm underline";
 
+// The view remounts on every toggle while the hash stays, so only jump on page load.
+let jumpedToStory = false;
+
 export default function PlayView() {
   // On /#story the browser jumps before this view mounts, so jump once here.
   useEffect(() => {
-    if (window.location.hash === "#story") {
+    if (!jumpedToStory && window.location.hash === "#story") {
+      jumpedToStory = true;
       document.getElementById("story")?.scrollIntoView();
     }
   }, []);
