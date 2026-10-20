@@ -100,14 +100,16 @@ for (const label of ["LinkedIn", "GitHub", "Email"]) {
 }
 await page.close();
 
-const playPage = await openPage(1440, 900, "/#play");
-// The hash view is applied in the render pass right after hydration.
-await playPage
-  .waitForSelector('[data-view="play"]', { timeout: 5000 })
-  .catch(() => {});
-s = await state(playPage);
-expect("/#play opens on Play", s.view === "play" && s.pressed[0] === "play", s);
-await playPage.close();
+for (const hash of ["#play", "#story"]) {
+  const playPage = await openPage(1440, 900, "/" + hash);
+  // The hash view is applied in the render pass right after hydration.
+  await playPage
+    .waitForSelector('[data-view="play"]', { timeout: 5000 })
+    .catch(() => {});
+  s = await state(playPage);
+  expect(`/${hash} opens on Play`, s.view === "play" && s.pressed[0] === "play", s);
+  await playPage.close();
+}
 
 await browser.close();
 console.log(JSON.stringify(evidence, null, 2));

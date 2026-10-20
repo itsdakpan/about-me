@@ -33,8 +33,8 @@ export default function Hero() {
         />
       ))}
 
-      <h1 className="relative z-1 flex flex-wrap items-center justify-center gap-3.5 text-[clamp(40px,8vw,84px)] font-extrabold tracking-[-2px]">
-        <span className="hero-title">Hi, I&apos;m Dylan</span>
+      <h1 className="hero-title relative z-1 flex flex-wrap items-center justify-center gap-3.5 text-[clamp(40px,8vw,84px)] font-extrabold tracking-[-2px]">
+        Hi, I&apos;m Dylan
         <span className="face relative inline-block size-[clamp(56px,9vw,86px)] rounded-full">
           <span className="absolute inset-0 overflow-hidden rounded-full bg-[#8a6a55]">
             <Image
@@ -55,7 +55,7 @@ export default function Hero() {
         working remotely, open to anywhere
       </div>
 
-      <p className="relative z-1 mt-3.5 max-w-[560px] text-lg text-soft">
+      <p className="relative z-1 mt-3.5 max-w-[560px] text-[18px] text-soft">
         Ex mechanical engineer, now a developer. I build web apps and AI
         automations.
       </p>

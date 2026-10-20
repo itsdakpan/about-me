@@ -57,7 +57,7 @@ export default function Header({ view, onViewChange }: Props) {
                 type="button"
                 aria-pressed={on}
                 onClick={() => show(option)}
-                className={`cursor-pointer rounded-3xl px-[22px] py-2 text-[15px] transition-all duration-250 max-[700px]:px-4 max-[700px]:py-[7px] ${
+                className={`cursor-pointer rounded-3xl px-[22px] py-2 text-[15px] transition-all duration-250 ease-[ease] max-[700px]:px-4 max-[700px]:py-[7px] ${
                   on
                     ? "bg-white font-bold text-ink shadow-[0_2px_6px_#0000001a]"
                     : "text-[#888]"

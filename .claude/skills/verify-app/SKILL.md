@@ -24,13 +24,14 @@ npm run build      # dry check: must exit 0
 
 ```sh
 npm install
-PORT=3100   # any free port
-npx next dev -p $PORT > .fredrin/tmp/verify-dev.log 2>&1 &
+mkdir -p .fredrin/tmp
+npx next dev -p 3100 > .fredrin/tmp/verify-dev.log 2>&1 &
 echo $! > .fredrin/tmp/verify-dev.pid
-until curl -sf http://localhost:$PORT/ | grep -q "Hi, I&#x27;m Dylan\|Hi, I'm Dylan"; do sleep 1; done
+until curl -sf http://localhost:3100/ | grep -q "Hi, I&#x27;m Dylan\|Hi, I'm Dylan"; do sleep 1; done
 ```
 
-Ready means `curl -sf http://localhost:$PORT/` returns HTML containing "Hi, I'm Dylan"
+Port 3100 is used throughout; if it is busy, pick another and use it in every block.
+Ready means `curl -sf http://localhost:3100/` returns HTML containing "Hi, I'm Dylan"
 (React escapes the apostrophe as `&#x27;`).
 
 ## Drive
@@ -41,7 +42,7 @@ and fetch Chromium if it isn't cached:
 ```sh
 npm install --no-save playwright@1.63.0
 npx playwright install chromium
-node .claude/skills/verify-app/drive.mjs http://localhost:$PORT .fredrin/tmp/verify
+node .claude/skills/verify-app/drive.mjs http://localhost:3100 .fredrin/tmp/verify
 ```
 
 `drive.mjs` uses real selectors only:
@@ -51,7 +52,7 @@ node .claude/skills/verify-app/drive.mjs http://localhost:$PORT .fredrin/tmp/ver
 - menu links by text: Experience, Projects, Back Story, Contact
 - footer links: `footer a[aria-label="LinkedIn|GitHub|Email"]`
 - the mounted view: `[data-view]` wrapper, holding `section#work` or `section#play`
-- routes: `/` and `/#play`
+- routes: `/`, `/#play` and `/#story`
 - viewports: 1440×900 and 390×844, full-page screenshots
 
 It exits non-zero if any step fails. Extend it when a feature below changes.

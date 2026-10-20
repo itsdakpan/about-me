@@ -1,7 +1,7 @@
 // Icons copied verbatim from design/reference.html.
 export default function Footer() {
   const link =
-    "flex size-11 items-center justify-center rounded-full bg-white shadow-[0_3px_10px_#0000000d] transition-all duration-200 hover:-translate-y-0.5";
+    "flex size-11 items-center justify-center rounded-full bg-white shadow-[0_3px_10px_#0000000d] transition-all duration-200 ease-[ease] hover:-translate-y-0.5";
 
   return (
     <footer
@@ -48,7 +48,7 @@ export default function Footer() {
           </svg>
         </a>
       </div>
-      <small className="mt-4 block text-[#888]">
+      <small className="mt-4 block text-[length:smaller] text-[#888]">
         © 2026 Dylan Akpan. Built with Fredrin: each section was its own ticket,
         branch and agent.
       </small>
