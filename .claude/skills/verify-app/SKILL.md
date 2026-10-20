@@ -65,6 +65,7 @@ It exits non-zero if any step fails. Extend it when a feature below changes.
 
 - `.fredrin/tmp/verify/home-1440.png`, `home-390.png`: full page
 - `.fredrin/tmp/verify/menu-open-1440.png`: menu open
+- `.fredrin/tmp/verify/projects-link-1440.png`: after the menu's Projects link
 
 Compare the screenshots by eye against the approved mockups (`desktop.png`,
 `mobile.png`, `footer.png` on ticket ABOU-C5G7C5). On a Fredrin ticket, upload them
@@ -86,4 +87,4 @@ One file per feature under `features/`: what it does, how to drive it, what prov
 - [burger-menu.md](features/burger-menu.md): burger and dropdown menu
 - [hero.md](features/hero.md): headline, face photo, pill, lede, floating squares
 - [footer.md](features/footer.md): social icons and copyright
-- [views.md](features/views.md): Work and Play views (placeholders until their tickets land)
+- [views.md](features/views.md): Work view (jobs, projects, stack) and Play view
