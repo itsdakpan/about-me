@@ -19,6 +19,16 @@ type Props = {
 
 export default function Header({ view, onViewChange }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Start from the current position, so a page loaded mid-scroll (/#story,
+  // back/forward) shows the background straight away.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -36,7 +46,11 @@ export default function Header({ view, onViewChange }: Props) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-10 flex items-center justify-between px-7 py-5 max-[700px]:px-4 max-[700px]:py-3.5">
+      <header
+        className={`fixed inset-x-0 top-0 z-10 flex items-center justify-between px-7 py-5 transition-[background-color,backdrop-filter] duration-200 max-[700px]:px-4 max-[700px]:py-3.5 ${
+          scrolled ? "bg-bg/80 backdrop-blur-md" : "bg-transparent"
+        }`}
+      >
         <div className="size-[54px] overflow-hidden rounded-full border-[3px] border-white bg-white shadow-[0_0_0_2px_#2b2b2b22,0_6px_18px_#0000001a]">
           <Image
             src="/memoji.jpg"

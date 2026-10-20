@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export function Section({ id, children }: { id?: string; children: ReactNode }) {
   return (
-    <section id={id} className="mx-auto max-w-[900px] px-6 py-[70px]">
+    <section id={id} className="mx-auto max-w-[900px] scroll-mt-[96px] px-6 py-[70px] max-[700px]:scroll-mt-[84px]">
       {children}
     </section>
   );
